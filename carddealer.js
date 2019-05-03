@@ -14,9 +14,9 @@ class CardDealer {
         cards.forEach((element, i, array) => {
             var htmlElement = document.createElement("A");
             htmlElement.setAttribute("onclick", "table.cardDealer.flip(" + i + ")");
-            //htmlElement.setAttribute("class", "card");
+            htmlElement.setAttribute("class", "card");
             htmlElement.href = "javascript:void(0);";
-            htmlElement.innerHTML = "<img src='" + element.getContent() + "' width=100px height=100px>";
+            htmlElement.innerHTML = "<img class= 'cardImg' src='" + element.getContent() + "' alt='" + element.id + "'>";
 
             html.appendChild(htmlElement);
             if (i == array.length / 2) {
@@ -29,7 +29,7 @@ class CardDealer {
     flip(i) {
         var card = this.deck.getCards()[i];
         
-        console.log("Content: " + card.front + " Id: " + card.id + " From: " + card.from);
+        console.log(" Id: " + card.id + " From: " + card.from);
         if (this.flippedCardPosition) {
             var flippedCard = this.deck.getCards()[this.flippedCardPosition];
             if (card.from != flippedCard.from) {

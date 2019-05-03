@@ -1,8 +1,3 @@
-
-
-
-
-
 var male = [
     {data:"./assets/decks/M/king_of_clubs2.png", id:1}, 
     {data:"./assets/decks/M/king_of_diamonds2.png", id:2}, 
