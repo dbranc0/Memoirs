@@ -25,7 +25,6 @@ class CardDealer {
     flip(i) {
         var card = this.deck.getCards()[i];
         
-        console.log(" Id: " + card.id + " From: " + card.from);
         if (this.flippedCardPosition) {
             var flippedCard = this.deck.getCards()[this.flippedCardPosition];
             if (card.from != flippedCard.from) {
@@ -62,11 +61,10 @@ class CardDealer {
         element.setAttribute("onclick", "table.cardDealer.flip(" + position + ")");
         element.setAttribute("class", "card");
         element.href = "javascript:void(0);";
-        //htmlElement.innerHTML = "<img class= 'cardImg' src='" + card.getContent() + "' alt='" + card.id + "'>";
         var html = "<div class='flip-card'>";
         html += "<div class='flip-card-inner'>";
         html += "<div class='flip-card-back cardImg'>";
-        html += "<img class= 'cardImg' src='" + card.front + "' alt='" + card.id + "'>";
+        html += "<div class='card-content'><h3>" + card.name + "</h3><br><h3>" + card.age +"</h3><img class= 'cardImg' src='" + card.front + "' alt='" + card.id + "'></div>";
         html += "</div> <div class='flip-card-front'>";
         html += "<img src='" + card.back + "'></div></div></div>";
         element.innerHTML = html;
