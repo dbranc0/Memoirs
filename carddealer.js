@@ -12,11 +12,7 @@ class CardDealer {
         var html = document.getElementById("table");
         html.innerHTML = "";
         cards.forEach((element, i, array) => {
-            var htmlElement = document.createElement("A");
-            htmlElement.setAttribute("onclick", "table.cardDealer.flip(" + i + ")");
-            htmlElement.setAttribute("class", "card");
-            htmlElement.href = "javascript:void(0);";
-            htmlElement.innerHTML = "<img class= 'cardImg' src='" + element.getContent() + "' alt='" + element.id + "'>";
+            var htmlElement = this.generateLink(i, element);
 
             html.appendChild(htmlElement);
             if (i == array.length / 2) {
@@ -59,6 +55,23 @@ class CardDealer {
     }
     setup(deck1, deck2) {
         this.deck = new Deck(deck1, deck2);
+    }
+
+    generateLink(position, card) {
+        var element = document.createElement("A");
+        element.setAttribute("onclick", "table.cardDealer.flip(" + position + ")");
+        element.setAttribute("class", "card");
+        element.href = "javascript:void(0);";
+        //htmlElement.innerHTML = "<img class= 'cardImg' src='" + card.getContent() + "' alt='" + card.id + "'>";
+        var html = "<div class='flip-card'>";
+        html += "<div class='flip-card-inner'>";
+        html += "<div class='flip-card-back cardImg'>";
+        html += "<img class= 'cardImg' src='" + card.front + "' alt='" + card.id + "'>";
+        html += "</div> <div class='flip-card-front'>";
+        html += "<img src='" + card.back + "'></div></div></div>";
+        element.innerHTML = html;
+
+        return element;
     }
 
 }
