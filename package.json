@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/dbranc0/Memoirs/issues"
   },
-  "homepage": "https://github.com/dbranc0/Memoirs#readme"
+  "homepage": "https://github.com/dbranc0/Memoirs#readme",
+  "dependencies": {
+    "phaser": "^3.16.2"
+  }
 }
