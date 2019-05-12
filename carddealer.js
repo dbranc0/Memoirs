@@ -11,7 +11,8 @@ class CardDealer {
         var cards = this.deck.getCards();
         var html = document.getElementById("table");
         html.innerHTML = "";
-        cards.forEach((element, i, array) => {
+/*         cards.forEach((element, i, array) => {
+            console.log("");
             var htmlElement = this.generateLink(i, element);
 
             html.appendChild(htmlElement);
@@ -19,7 +20,8 @@ class CardDealer {
                 var separator = document.createElement("BR");
                 html.appendChild(separator);
             }
-        });
+        }
+        ); */
     }
 
     flip(i) {
@@ -53,10 +55,24 @@ class CardDealer {
         this.deal();
     }
     setup(deck1, deck2) {
+        this.config = {
+            type:Phaser.AUTO,
+            width:800,
+            height:600,
+            physics: {
+                default:'arcade',
+                arcade: {
+                    gravity: {y:200}
+                }
+            },
+            scene: [ Table ]
+        };
+        this.game = new Phaser.Game(this.config);
         this.deck = new Deck(deck1, deck2);
+
     }
 
-    generateLink(position, card) {
+    /* generateLink(position, card) {
         var element = document.createElement("A");
         element.setAttribute("onclick", "table.cardDealer.flip(" + position + ")");
         element.setAttribute("class", "card");
@@ -70,6 +86,6 @@ class CardDealer {
         element.innerHTML = html;
 
         return element;
-    }
+    } */
 
 }
