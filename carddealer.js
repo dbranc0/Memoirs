@@ -55,21 +55,8 @@ class CardDealer {
         this.deal();
     }
     setup(deck1, deck2) {
-        this.config = {
-            type:Phaser.AUTO,
-            width:800,
-            height:600,
-            physics: {
-                default:'arcade',
-                arcade: {
-                    gravity: {y:200}
-                }
-            },
-            scene: [ Table ]
-        };
-        this.game = new Phaser.Game(this.config);
         this.deck = new Deck(deck1, deck2);
-
+        
     }
 
     /* generateLink(position, card) {

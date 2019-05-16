@@ -1,4 +1,4 @@
-var male = {
+let male = {
     name: "Paulo",
     dob: "01/01/80",
     pics: [
@@ -9,7 +9,7 @@ var male = {
     ]     
 };
 
-var female = {
+let female = {
     name: "Joana",
     dob: "01/01/80",
     pics: [
@@ -19,5 +19,20 @@ var female = {
             {pic:"./assets/decks/F/queen_of_spades2.png", id:4, age:"5 months"} 
         ]
     };
-table = new Table(male, female);
-table.cardDealer.deal();
+
+this.config = {
+    type:Phaser.AUTO,
+    width:1900,
+    height:950,
+    physics: {
+        default:'arcade',
+        arcade: {
+            gravity: {y:200}
+        }
+    },
+    //scene: [ TableScene ],
+    //decks: [male, female]
+    };
+    this.game = new Phaser.Game(this.config);
+    this.game.scene.add('TableScene', TableScene, true, [male, female]);
+    console.log(this.game);
