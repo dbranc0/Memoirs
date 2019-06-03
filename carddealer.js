@@ -8,10 +8,11 @@ class CardDealer {
     }
 
     deal() {
-        var cards = this.deck.getCards();
+        return this.deck.getCards();
+/*        var cards = this.deck.getCards();
         var html = document.getElementById("table");
         html.innerHTML = "";
-/*         cards.forEach((element, i, array) => {
+         cards.forEach((element, i, array) => {
             console.log("");
             var htmlElement = this.generateLink(i, element);
 

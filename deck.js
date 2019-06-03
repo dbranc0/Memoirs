@@ -2,10 +2,10 @@ class Deck {
     constructor(deck1, deck2) {
         this.cards = [];
         deck1.pics.forEach(element => {
-            this.cards.push(new Card(element, true));
+            this.cards.push(new Card(element, true, deck1.name));
         });
         deck2.pics.forEach(element => {
-            this.cards.push(new Card(element, false));
+            this.cards.push(new Card(element, false, deck2.name));
         });
     }
 

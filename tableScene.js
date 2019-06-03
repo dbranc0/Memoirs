@@ -20,7 +20,13 @@ class TableScene extends Phaser.Scene {
 
     create() {
         this.add.image(950,475,'Table');
-        
+        var x = 0;
+        var y = 0;
+        this.table.cardDealer.deal().forEach(card => {
+            this.add.image(x,y,card.getContent());
+            x += 100;
+            y += 100;
+        });
     }
 
     preloadCards() {
