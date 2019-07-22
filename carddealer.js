@@ -1,5 +1,7 @@
 class CardDealer {
 
+    
+
     shuffle() {
         var iterations = getRandom(50,200);
         for (let i = 0; i < iterations; i++) {
@@ -12,11 +14,11 @@ class CardDealer {
         var html = document.getElementById("table");
         html.innerHTML = "";
         cards.forEach((element, i, array) => {
-            var htmlElement = document.createElement("A");
-            htmlElement.setAttribute("onclick", "table.cardDealer.flip(" + i + ")");
-            htmlElement.setAttribute("class", "card");
-            htmlElement.href = "javascript:void(0);";
-            htmlElement.innerHTML = "<img class= 'cardImg' src='" + element.getContent() + "' alt='" + element.id + "'>";
+            var htmlElement = this.generateCard(element);
+            //htmlElement.setAttribute("onclick", "table.cardDealer.flip(" + i + ")");
+            //htmlElement.setAttribute("class", "card");
+            //htmlElement.href = "javascript:void(0);";
+            //htmlElement.innerHTML = "<img class= 'cardImg' src='" + element.getContent() + "' alt='" + element.id + "'>";
 
             html.appendChild(htmlElement);
             if (i == array.length / 2) {
@@ -24,6 +26,33 @@ class CardDealer {
                 html.appendChild(separator);
             }
         });
+    }
+
+    generateCard(card) {
+        var htmlElement = document.createElement("DIV");
+        var cardFront = document.createElement("DIV");
+        var cardBack = document.createElement("DIV");
+        var cardDiv = document.createElement("DIV");
+
+        cardFront.setAttribute("class", "card__face card__face--front");
+        cardFront.innerHTML = "<img src='" + card.front +"' height=100px width=100px>";
+
+        cardBack.setAttribute("class", "card__face card__face--back");
+        cardBack.innerHTML = "<img src='" + card.back + "' height=100px width=100px>"
+
+        cardDiv.appendChild(cardFront);
+        cardDiv.appendChild(cardBack);
+        cardDiv.setAttribute("class", "card");
+        cardDiv.addEventListener('click', function() {
+            cardDiv.classList.toggle('is-flipped');
+        });
+
+        htmlElement.appendChild(cardDiv);
+
+        htmlElement.setAttribute("class", "scene scene--card");
+        
+        console.log(htmlElement);
+        return htmlElement;
     }
 
     flip(i) {
@@ -60,5 +89,4 @@ class CardDealer {
     setup(deck1, deck2) {
         this.deck = new Deck(deck1, deck2);
     }
-
 }

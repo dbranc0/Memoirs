@@ -6,18 +6,47 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        a.card {
-            margin: 10px;
-        }
+        .scene {
+  width: 200px;
+  height: 260px;
+  margin: 40px 0;
+  perspective: 600px;
+}
 
-        #table {
-            padding: 10%;
-        }
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform-origin: center right;
+  transition: transform 1s;
+}
 
-        .cardImg {
-            height: 150px;
-            width: 110px;
-        }
+.card.is-flipped {
+  transform: translateX(-100%) rotateY(180deg);
+}
+
+.card__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  line-height: 260px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 40px;
+  backface-visibility: hidden;
+}
+
+.card__face--front {
+  background: red;
+}
+
+.card__face--back {
+  background: blue;
+  transform: rotateY(-180deg);
+}
 
         body {
             background-image: url("./assets/table.jpg");
@@ -27,6 +56,7 @@
 <body>
     <div id="table">
     </div>
+
     <script src="helper.js"></script>
     <script src="table.js"></script>
     <script src="carddealer.js"></script>
