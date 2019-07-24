@@ -3,15 +3,15 @@ class Card {
         this.front = data.data;
         this.id = data.id;
         this.back = "./assets/decks/card_backs/" + (data, isMale ? "M" : "F") + ".png";
-        this.visible = false;
+        this.flipped = false;
         this.from = (data, isMale ? "M" : "F");
     }
 
     flip() {
-        this.visible = !this.visible;
+        this.flipped = !this.flipped;
     }
 
     getContent() {
-        return ( this.visible ? this.front : this.back );
+        return ( this.flipped ? this.front : this.back );
     }
 }

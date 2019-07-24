@@ -1,92 +1,130 @@
 class CardDealer {
-
-    
-
     shuffle() {
         var iterations = getRandom(50,200);
+        iterations = 0;
         for (let i = 0; i < iterations; i++) {
-            this.deck.riffle()
+            this.levels[this.currentLevel].riffle();
         }
     }
 
     deal() {
-        var cards = this.deck.getCards();
+        let maxColumn = 3;
+        var cards = this.levels[this.currentLevel].getCards();
         var html = document.getElementById("table");
         html.innerHTML = "";
+        var counter = 1;
+        var row = document.createElement("DIV");
+        row.setAttribute("class", "row");
         cards.forEach((element, i, array) => {
-            var htmlElement = this.generateCard(element);
-            //htmlElement.setAttribute("onclick", "table.cardDealer.flip(" + i + ")");
-            //htmlElement.setAttribute("class", "card");
-            //htmlElement.href = "javascript:void(0);";
-            //htmlElement.innerHTML = "<img class= 'cardImg' src='" + element.getContent() + "' alt='" + element.id + "'>";
-
-            html.appendChild(htmlElement);
-            if (i == array.length / 2) {
-                var separator = document.createElement("BR");
-                html.appendChild(separator);
+            var htmlElement = this.generateCard(element, i);
+            row.appendChild(htmlElement);
+            if (i == array.length - 1 && counter < maxColumn) {
+                html.appendChild(row);
             }
+            if (counter == maxColumn) {
+                html.appendChild(row);
+                row = document.createElement("DIV");
+                row.setAttribute("class","row");
+                counter = 1;
+            } else {
+                counter++;
+            }
+
         });
     }
 
-    generateCard(card) {
+    generateCard(card, order) {
         var htmlElement = document.createElement("DIV");
         var cardFront = document.createElement("DIV");
         var cardBack = document.createElement("DIV");
         var cardDiv = document.createElement("DIV");
 
         cardFront.setAttribute("class", "card__face card__face--front");
-        cardFront.innerHTML = "<img src='" + card.front +"' height=100px width=100px>";
+        cardFront.innerHTML = "<img src='" + card.back +"' height=100% width=100%>";
 
         cardBack.setAttribute("class", "card__face card__face--back");
-        cardBack.innerHTML = "<img src='" + card.back + "' height=100px width=100px>"
+        cardBack.innerHTML = "<img src='" + card.front + "' height=100% width=100%>"
 
         cardDiv.appendChild(cardFront);
         cardDiv.appendChild(cardBack);
         cardDiv.setAttribute("class", "card");
+        cardDiv.setAttribute("id",order);
         cardDiv.addEventListener('click', function() {
-            cardDiv.classList.toggle('is-flipped');
+            table.cardDealer.flip(order);
         });
 
         htmlElement.appendChild(cardDiv);
 
-        htmlElement.setAttribute("class", "scene scene--card");
+        htmlElement.setAttribute("class", "scene scene--card column");
         
-        console.log(htmlElement);
         return htmlElement;
     }
 
     flip(i) {
-        var card = this.deck.getCards()[i];
+        var pickedCard = this.getCard(i);
+        var flippedCard = this.flippedCardPosition != null ? this.getCard(this.flippedCardPosition) : null;
         
-        console.log(" Id: " + card.id + " From: " + card.from);
-        if (this.flippedCardPosition) {
-            var flippedCard = this.deck.getCards()[this.flippedCardPosition];
-            if (card.from != flippedCard.from) {
-                if (card.id != flippedCard.id) {
-                    card.flip();
-                    this.deal();
-                    var context = this;
-                    setTimeout(function(){ 
-                        card.flip();
-                        flippedCard.flip();
-                        context.deal();
-                    }, 1500);
-
-                } else {
-                    card.flip();
-                    this.deal();
+        if (!pickedCard.card.flipped) {
+            if(flippedCard == null) {
+                this.flipCard(pickedCard);
+                this.flippedCardPosition = i;
+            } else {
+                //compare decks
+                if (pickedCard.card.from != flippedCard.card.from) {
+                    this.flipCard(pickedCard);
+                    //compare cards
+                    if (pickedCard.card.id == flippedCard.card.id) {
+                        //matching cards
+                        this.flippedCardPosition = null;
+                        this.foundPairs++;
+                        console.log(this.foundPairs);
+                        console.log(this.pairs);
+                        console.log(this.foundPairs == this.pairs);
+                        if (this.foundPairs == this.pairs) {
+                            console.log("level complete");
+                            this.changeLevel();
+                        }
+                    } else {
+                        //not matching cards
+                        setTimeout(function(asd){ 
+                            this.flipCard(pickedCard);
+                            this.flipCard(flippedCard);
+                            this.flippedCardPosition = null;
+                        }.bind(this), 1500);
+                    }
                 }
-                this.flippedCardPosition = null;
             }
-        
 
-        } else {
-            card.flip();
-            this.flippedCardPosition = i;
         }
-        this.deal();
     }
+
+    flipCard(card) {
+        card.card.flip();
+        card.html.classList.toggle('is-flipped');
+    }
+
+    getCard(i) {
+        return {
+            card: this.levels[this.currentLevel].getCards()[i], 
+            html: document.getElementById(i)
+        };
+    }
+
     setup(deck1, deck2) {
-        this.deck = new Deck(deck1, deck2);
+        this.levels = [];
+        for (let i = 0; i < deck1.levels.length; i++) {
+            this.levels.push(new Deck(deck1.levels[i], deck2.levels[i]));
+        }
+        this.currentLevel = 0;
+        this.pairs = deck1.levels[0].length;
+        this.foundPairs = 0;
+    }
+
+    changeLevel() {
+        this.currentLevel++;
+        this.pairs = this.levels[this.currentLevel].length;
+        this.foundPairs = 0;
+        this.shuffle();
+        this.deal();
     }
 }
