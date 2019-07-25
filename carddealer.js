@@ -82,7 +82,10 @@ class CardDealer {
                         console.log(this.foundPairs == this.pairs);
                         if (this.foundPairs == this.pairs) {
                             console.log("level complete");
-                            this.changeLevel();
+                            setTimeout(function() {
+                                console.log("wait");
+                                this.changeLevel();
+                            }.bind(this), 5000);
                         }
                     } else {
                         //not matching cards
