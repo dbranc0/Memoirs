@@ -1,16 +1,17 @@
 class CardDealer {
     shuffle() {
-        var iterations = getRandom(50,200);
-        iterations = 0;
-        for (let i = 0; i < iterations; i++) {
-            this.levels[this.currentLevel].riffle();
-        }
+        var iterations = getRandom(500,1000);
+        //iterations = 0;
+        this.levels[this.currentLevel].riffle();
+        //for (let i = 0; i < iterations; i++) {
+        //}
     }
 
     deal() {
-        let maxColumn = 3;
+        let maxColumn = 4;
         var cards = this.levels[this.currentLevel].getCards();
         var html = document.getElementById("table");
+        console.log(html);
         html.innerHTML = "";
         var counter = 1;
         var row = document.createElement("DIV");
@@ -29,7 +30,6 @@ class CardDealer {
             } else {
                 counter++;
             }
-
         });
     }
 
@@ -41,13 +41,15 @@ class CardDealer {
 
         cardFront.setAttribute("class", "card__face card__face--front");
         cardFront.innerHTML = "<img src='" + card.back +"' height=100% width=100%>";
+        //cardFront.style = "{ background: url(" + card.back + ") center; }";
 
         cardBack.setAttribute("class", "card__face card__face--back");
         cardBack.innerHTML = "<img src='" + card.front + "' height=100% width=100%>"
+        //cardBack.style = "{ background: url(" + card.front + ") center; }";
 
         cardDiv.appendChild(cardFront);
         cardDiv.appendChild(cardBack);
-        cardDiv.setAttribute("class", "card");
+        cardDiv.setAttribute("class", "card permitted " + card.from);
         cardDiv.setAttribute("id",order);
         cardDiv.addEventListener('click', function() {
             table.cardDealer.flip(order);
@@ -59,45 +61,52 @@ class CardDealer {
         
         return htmlElement;
     }
-
+    
     flip(i) {
-        var pickedCard = this.getCard(i);
-        var flippedCard = this.flippedCardPosition != null ? this.getCard(this.flippedCardPosition) : null;
-        
-        if (!pickedCard.card.flipped) {
-            if(flippedCard == null) {
-                this.flipCard(pickedCard);
-                this.flippedCardPosition = i;
-            } else {
-                //compare decks
-                if (pickedCard.card.from != flippedCard.card.from) {
+        if (!this.locked) {
+            var pickedCard = this.getCard(i);
+            var flippedCard = this.flippedCardPosition != null ? this.getCard(this.flippedCardPosition) : null;
+            
+            if (!pickedCard.card.flipped) {
+                if(flippedCard == null) {
+                    this.setClickable(pickedCard.card.to);
+                    pickedCard.html.classList.toggle("permitted", false);
                     this.flipCard(pickedCard);
-                    //compare cards
-                    if (pickedCard.card.id == flippedCard.card.id) {
-                        //matching cards
-                        this.flippedCardPosition = null;
-                        this.foundPairs++;
-                        console.log(this.foundPairs);
-                        console.log(this.pairs);
-                        console.log(this.foundPairs == this.pairs);
-                        if (this.foundPairs == this.pairs) {
-                            console.log("level complete");
-                            setTimeout(function() {
-                                console.log("wait");
-                                this.changeLevel();
-                            }.bind(this), 5000);
-                        }
-                    } else {
-                        //not matching cards
-                        setTimeout(function(asd){ 
-                            this.flipCard(pickedCard);
-                            this.flipCard(flippedCard);
+                    this.flippedCardPosition = i;
+                } else {
+                    //compare decks
+                    if (pickedCard.card.from != flippedCard.card.from) {
+                        pickedCard.html.classList.toggle("permitted");
+                        this.flipCard(pickedCard);
+                        //compare cards
+                        if (pickedCard.card.id == flippedCard.card.id) {
+                            //matching cards
+                            this.setClickable("card");
                             this.flippedCardPosition = null;
-                        }.bind(this), 1500);
+                            this.foundPairs++;
+                            if (this.foundPairs == this.pairs) {
+                                console.log("level complete");
+                                setTimeout(function() {
+                                    document.getElementById("table").classList.toggle("fade");
+                                }, 3000);
+                                setTimeout(function() {
+                                    this.changeLevel();
+                                }.bind(this), 5000);
+                            }
+                        } else {
+                            //not matching cards
+                            this.locked = true;
+                            setTimeout(function(){
+                                this.flipCard(pickedCard);
+                                this.flipCard(flippedCard);
+                                this.flippedCardPosition = null;
+                                this.setClickable("card"); 
+                                this.locked = false;
+                            }.bind(this), 2000);
+                        }
                     }
                 }
             }
-
         }
     }
 
@@ -123,11 +132,37 @@ class CardDealer {
         this.foundPairs = 0;
     }
 
+    setClickable(allowed) {
+        var cards = document.getElementsByClassName("card");
+        console.log(cards);
+        for (let i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            if (card.classList.contains(allowed) && !card.classList.contains("is-flipped")) {
+                card.classList.toggle("permitted", true);
+            } else {
+                card.classList.toggle("permitted", false);
+            }
+            
+        }
+    }
+
     changeLevel() {
         this.currentLevel++;
-        this.pairs = this.levels[this.currentLevel].length;
-        this.foundPairs = 0;
-        this.shuffle();
-        this.deal();
+        if(this.currentLevel < this.levels.length) {
+            var table = document.getElementById("table");
+            table.classList.toggle("level");
+            this.pairs = this.levels[this.currentLevel].length;
+            this.foundPairs = 0;
+            this.shuffle();
+            console.log("creating loadbar");
+            table.innerHTML = "<div class='progress'><span class='percent'>NOW LOADING</span><div id='loadbar' class='bar'></div></div>";  
+            document.getElementById("loadbar").classList.toggle("loading");
+            setTimeout(() => {
+                console.log("enter timeout");
+                this.deal();
+                table.classList.toggle("level");
+                table.classList.toggle("fade");
+            }, 10*1000);
+        }
     }
 }

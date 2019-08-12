@@ -5,6 +5,7 @@ class Card {
         this.back = "./assets/decks/card_backs/" + (data, isMale ? "M" : "F") + ".png";
         this.flipped = false;
         this.from = (data, isMale ? "M" : "F");
+        this.to = (data, isMale ? "F" : "M");
     }
 
     flip() {

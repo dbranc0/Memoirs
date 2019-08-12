@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    html { overflow-y: hidden; }
+
+      .card {
+        margin: 10px;
+      }
+
+      body {
+        margin: 0px;
+        padding: 0px;
+        background-color: #AAA7A2; 
+        /* background: url('http://insideoutgames.co/wp-content/uploads/2018/12/bag-center-bedroom-bookshelf-shelves-furniture-home-decor-accessory-grunge-style-90s-norinco-mak-90-for-sale.jpg'); */
+        background-size:cover; 
+      }
+    
+      .tv {
+        position: relative;
+        left: 17.5%;
+        height: 100%;
+        width: 1200px;
+        background-color: green;
+        background-image: url('TV.png');
+      }
+    
+      .frame {
+        border-radius: 20px;
+        position: relative;
+        /*left: 16%;
+        top: 0.7%;*/
+        left:7%;
+        top: 9%;
+        width: 85%;
+        height: 70%;
+        pointer-events: all;
+        /*background-image: url('assets/table.jpg');*/
+      }
+    
+      .screen {
+        flex-grow: 1;
+        border: none;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%; 
+      }
+
+      .table {
+        left: 20%;
+        top: 7%;
+        position: relative;
+      }   
+    </style>
+  </head>
+  <body>
+      <div class="tv">
+            <div class="frame container">
+                <div class="table level" id="table"></div>
+              </div>
+    </div>
+    <script src="helper.js"></script>
+    <script src="table.js"></script>
+    <script src="carddealer.js"></script>
+    <script src="deck.js"></script>
+    <script src="card.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

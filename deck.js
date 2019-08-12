@@ -16,7 +16,7 @@ class Deck {
             );
     }
 
-    riffle() {
+    oldRiffle() {
         var riffledDeck = [];
         var leftDeck = this.cut(true);
         var rightDeck = this.cut(false);
@@ -41,6 +41,20 @@ class Deck {
             
         }
         this.cards =  riffledDeck;
+    }
+
+    riffle() {
+        console.log(this.cards);
+        var currentIndex = this.cards.length;
+        var tempValue, randomIndex;
+
+        while(currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            tempValue = this.cards[currentIndex];
+            this.cards[currentIndex] = this.cards[randomIndex];
+            this.cards[randomIndex] = tempValue;
+        }
     }
 
     getCards() {

@@ -1,0 +1,131 @@
+.cenas {
+  /* float: right; */
+  left: 33%;
+  top: 17%;
+  position: absolute;
+}
+
+.scene {
+  float: left;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 100px;
+  height: 200px;
+  perspective: 600px;
+}
+
+.row
+{
+  display: table;
+  /* width: 75%; /*Optional*/
+  /* table-layout: fixed; /*Optional*/
+  /* border-spacing: 10px; /*Optional*/
+}
+.column
+{
+  display: table-cell;
+  width:  150px;
+  /* background-color: red; */
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform-origin: center right;
+  transition: transform 1s;
+}
+  
+  .card.is-flipped {
+    transform: translateX(-100%) rotateY(180deg);
+  }
+  
+  .card__face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    line-height: 260px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+    backface-visibility: hidden;
+  }
+  
+  .card__face--front {
+    
+  }
+  
+  .card__face--back {
+    transform: rotateY(-180deg);
+  }
+
+  .permitted:hover {
+    transform: translateY(-10%);
+  }
+
+  .level {
+    opacity: 1;
+   transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+   }
+
+  .level.fade {
+    opacity: 0.0;
+  }
+
+  .progress {
+    width: 80%;
+    top: 350px;
+    left: -10%;
+    border: 1px solid white;
+    border-radius: 20px;
+    position: relative;
+    padding: 3px;
+}
+
+.percent {
+    position: absolute;
+    left: 255px;
+    top: 50px;
+    color: white;
+    font-size: 40px;
+    
+    background: linear-gradient(90deg, green, yellow, green);
+    background-repeat: no-repeat;
+    background-size: 80%;
+    animation: light 3s linear infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0);
+}
+
+  @keyframes light {
+    0% {
+      background-position: -500%;
+    }
+    100% {
+      background-position: 500%
+    }
+  }
+
+.bar {
+    height: 20px;
+    background-color: red;
+    width: 0px;
+    border-radius: 20px;
+}
+
+.bar.loading {
+    animation: loadbar 10s;
+}
+
+@keyframes loadbar {
+    0% { width: 0%; background-color: #2ea76b; }
+    10% { width: 50%; }
+    50% { width: 80%}
+    80% { width: 90%; }
+    100% { width: 100%; background-color: #d3c600; }
+}
